@@ -16,8 +16,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "profissionais")
-@Table(name = "profissionais")
+@Entity(name = "professionals")
+@Table(name = "professionals")
 public class Professional {
 
     @Id
