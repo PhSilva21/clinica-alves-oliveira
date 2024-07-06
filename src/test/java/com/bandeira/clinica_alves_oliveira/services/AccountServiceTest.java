@@ -311,7 +311,7 @@ class AccountServiceTest {
     }
 
     @Nested
-    class findByMounth {
+    class findByMonth {
 
         @Test
         @DisplayName("Must return the monthly accounts according to the parameter entered")
