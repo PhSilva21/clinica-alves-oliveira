@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.repository.query.Procedure;
 
 import java.time.LocalDate;
 
@@ -47,7 +46,7 @@ public class Budget {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "procedure_id")
-    private Procedure procedure;
+    private com.bandeira.clinica_alves_oliveira.models.Procedure procedure;
 
     public Budget(LocalDate dateRegister, StatusBudget statusBudget, String namePatient, String nameProfessional
             , String nameProcedure, Patient patient, Professional professional, Double value, Procedure procedure) {
