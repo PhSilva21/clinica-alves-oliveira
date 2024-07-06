@@ -46,7 +46,7 @@ public class Budget {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "procedure_id")
-    private com.bandeira.clinica_alves_oliveira.models.Procedure procedure;
+    private Procedure procedure;
 
     public Budget(LocalDate dateRegister, StatusBudget statusBudget, String namePatient, String nameProfessional
             , String nameProcedure, Patient patient, Professional professional, Double value, Procedure procedure) {

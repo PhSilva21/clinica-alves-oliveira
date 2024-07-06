@@ -1,6 +1,5 @@
 package com.bandeira.clinica_alves_oliveira.models;
 
-import jakarta.persistence.Query;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
