@@ -1,11 +1,10 @@
 package com.bandeira.clinica_alves_oliveira.controllers;
 
+import com.bandeira.clinica_alves_oliveira.dtos.AccountPaymentDTO;
+import com.bandeira.clinica_alves_oliveira.dtos.AccountRequest;
+import com.bandeira.clinica_alves_oliveira.dtos.UpdateAccountDTO;
+import com.bandeira.clinica_alves_oliveira.models.Account;
 import com.bandeira.clinica_alves_oliveira.services.AccountService;
-import com.clinica.alvesoliveira.dto.AccountPaymentDTO;
-import com.clinica.alvesoliveira.dto.AccountRequest;
-import com.clinica.alvesoliveira.dto.UpdateAccountDTO;
-import com.clinica.alvesoliveira.model.Account;
-import com.clinica.alvesoliveira.services.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -17,63 +16,63 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "contas")
+@RequestMapping(value = "accounts")
 public class AccountController {
 
     @Autowired
-    private AccountService contaService;
+    private AccountService accountService;
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<AccountRequest> register(@RequestBody @Valid AccountRequest accountRequest){
-        var response = contaService.createAccount(accountRequest);
+        var response = accountService.createAccount(accountRequest);
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/debts")
     public List<Account> debts(){
-        return contaService.debts();
+        return accountService.debts();
     }
 
-    @GetMapping("/pagamentosFuncionarios")
-    public ResponseEntity<List<Account>> employwwPayments(@RequestParam @Param(("request")) LocalDate request){
-        var response = contaService.employeePayments();
+    @GetMapping("/employeePayments")
+    public ResponseEntity<List<Account>> employeePayments(@RequestParam @Param(("request")) LocalDate request){
+        var response = accountService.employeePayments();
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Void> pagarConta(@PathVariable ("id") Long id,
+    public ResponseEntity<Void> paymentAccount(@PathVariable ("id") Long id,
                                            @RequestBody @Valid AccountPaymentDTO accountPaymentDTO){
-         contaService.low(id, accountPaymentDTO);
+         accountService.low(id, accountPaymentDTO);
          return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/contasDoMes")
-    public ResponseEntity<List<Account>> findByMes(@RequestParam @Param(("request")) LocalDate request){
-        var response = contaService.findByMounth(request);
+    @GetMapping("/findByMonth")
+    public ResponseEntity<List<Account>> findByMonth(@RequestParam @Param(("request")) LocalDate request){
+        var response = accountService.findByMounth(request);
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/contasPagas")
-    public ResponseEntity<List<Account>> contasPagas(@RequestParam @Param(("request")) LocalDate request){
-        var response = contaService.findByPaidBillsByMounth(request);
+    @GetMapping("/paidBills")
+    public ResponseEntity<List<Account>> paidBills(@RequestParam @Param(("request")) LocalDate request){
+        var response = accountService.findByPaidBillsByMounth(request);
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateById(@PathVariable Long id, @RequestBody UpdateAccountDTO updateContaDTO){
-        contaService.update(id, updateContaDTO);
+        accountService.update(id, updateContaDTO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/voucher/{id}")
     public ResponseEntity<Account> setVoucher(@PathVariable Long id, @RequestParam("imagem") MultipartFile imagem){
-        var response = contaService.insertVoucher(id, imagem);
+        var response = accountService.insertVoucher(id, imagem);
         return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/invoice/{id}")
     public ResponseEntity<Account> setInvoice(@PathVariable Long id, @RequestParam("imagem") MultipartFile imagem){
-        var response = contaService.insertInvoice(id, imagem);
+        var response = accountService.insertInvoice(id, imagem);
         return ResponseEntity.ok().body(response);
     }
 
