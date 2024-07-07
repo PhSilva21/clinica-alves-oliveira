@@ -29,7 +29,11 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/create").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/patient/update").hasRole(("ADMIN"))
+                        .requestMatchers(HttpMethod.POST, "/payment/delete").hasRole(("ADMIN"))
+                        .requestMatchers(HttpMethod.POST, "/payment/paymentsOfMonth").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/payment/paymentsOfDay").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

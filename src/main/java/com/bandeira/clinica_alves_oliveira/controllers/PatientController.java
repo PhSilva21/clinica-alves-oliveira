@@ -6,6 +6,7 @@ import com.bandeira.clinica_alves_oliveira.models.Patient;
 import com.bandeira.clinica_alves_oliveira.services.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,42 +14,45 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "paciente")
+@RequestMapping(value = "patient")
 public class PatientController {
 
     @Autowired
-    private PatientService pacienteService;
+    private PatientService patientService;
 
     @PostMapping("/register")
-    public ResponseEntity<PatientRequest> create(@RequestBody @Valid PatientRequest pacienteRequest) throws IOException {
-        var response = pacienteService.createPatient(pacienteRequest);
+    public ResponseEntity<PatientRequest> create(@RequestBody @Valid PatientRequest patientRequest) throws IOException {
+        var response = patientService.createPatient(patientRequest);
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/teste")
-    public List<Patient> lista(){
-        return pacienteService.findAll();
+    @GetMapping("/birthdays")
+    public ResponseEntity<List<Patient>> birthdays(){
+        var response = patientService.birthdays();
+        return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping
-    public List<Patient> ani(){
-        return pacienteService.birthdays();
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Patient>> findAll(){
+        var response = patientService.findAll();
+        return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Void> updatePacienteById(@PathVariable ("id") Long id,
-                                                   @RequestBody UpdatePatientDTO updatePacienteDTO) throws IOException {
-        pacienteService.update(id, updatePacienteDTO);
-        return ResponseEntity.noContent().build();
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleById(@PathVariable ("id") Long id){
-        pacienteService.deleteById(id);
+    @PostMapping("/update/{id}")
+    public ResponseEntity<Void> updatePatientById(@PathVariable ("id") Long id,
+                                                   @RequestBody UpdatePatientDTO updatePatientDTO) throws IOException {
+        patientService.update(id, updatePatientDTO);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("{nome}")
-    public ResponseEntity<Patient>finByNome(@PathVariable ("nome") String nome){
-        var response = pacienteService.findByName(nome);
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
+        patientService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("/findByName")
+    public ResponseEntity<Patient>finByName(@RequestParam @Param("name") String name){
+        var response = patientService.findByName(name);
         return ResponseEntity.ok().body(response);
     }
 

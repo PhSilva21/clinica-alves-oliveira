@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "pagamento")
+@RequestMapping(value = "payment")
 public class PaymentController {
 
     @Autowired
@@ -20,7 +20,7 @@ public class PaymentController {
 
 
     @PostMapping
-    public ResponseEntity<PaymentRequest> registerPayment(@RequestBody @Valid PaymentRequest
+    public ResponseEntity<PaymentRequest> createPayment(@RequestBody @Valid PaymentRequest
                                                                       paymentRequest){
         var response = paymentService.createPayment(paymentRequest);
         return ResponseEntity.ok().body(response);
@@ -32,8 +32,8 @@ public class PaymentController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/paymentsOfMounth")
-    public ResponseEntity<List<Payment>> findByMounth(){
+    @GetMapping("/paymentsOfMonth")
+    public ResponseEntity<List<Payment>> findByMonth(){
         var response = paymentService.findByMounth();
         return ResponseEntity.ok().body(response);
     }
@@ -45,8 +45,8 @@ public class PaymentController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
         paymentService.delete(id);
         return ResponseEntity.ok().build();
     }

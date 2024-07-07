@@ -36,8 +36,8 @@ public class AuthenticateController {
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO registerDTO) {
+    @PostMapping("/create")
+    public ResponseEntity createUser(@RequestBody @Valid RegisterDTO registerDTO) {
         if(this.repository.findByUsername(registerDTO.username()) != null)
             return ResponseEntity.ok().build();
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDTO.password());
