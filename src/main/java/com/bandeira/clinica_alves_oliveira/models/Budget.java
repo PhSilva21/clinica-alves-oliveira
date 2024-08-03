@@ -6,14 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "orcamentos")
-@Table(name = "orcamentos")
+@Entity(name = "budgets")
+@Table(name = "budgets")
 public class Budget {
 
     @Id
@@ -28,7 +29,7 @@ public class Budget {
 
     private String nameProfessional;
 
-    private Double value;
+    private BigDecimal value;
 
 
     @JsonIgnore
@@ -48,8 +49,9 @@ public class Budget {
     @JoinColumn(name = "procedure_id")
     private Procedure procedure;
 
+
     public Budget(LocalDate dateRegister, StatusBudget statusBudget, String namePatient, String nameProfessional
-            , String nameProcedure, Patient patient, Professional professional, Double value, Procedure procedure) {
+            , String nameProcedure, Patient patient, Professional professional, BigDecimal value, Procedure procedure) {
         this.dateRegister = dateRegister;
         this.statusBudget = statusBudget;
         this.namePatient = namePatient;

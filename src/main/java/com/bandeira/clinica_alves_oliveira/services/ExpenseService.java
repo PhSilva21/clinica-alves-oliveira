@@ -20,13 +20,13 @@ public class ExpenseService {
 
     public ExpenseRequest createExpense(ExpenseRequest expenseRequest){
 
-        Expense despesa = new Expense(
+        Expense expense = new Expense(
                 expenseRequest.expenseType(),
                 expenseRequest.name(),
                 expenseRequest.origin()
         );
 
-        expenseRepository.save(despesa);
+        expenseRepository.save(expense);
 
         return expenseRequest;
     }

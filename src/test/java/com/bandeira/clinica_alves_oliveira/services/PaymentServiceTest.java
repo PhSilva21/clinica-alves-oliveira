@@ -22,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,7 +53,7 @@ class PaymentServiceTest {
     ArgumentCaptor<Payment> paymentArgumentCaptor;
 
     PaymentRequest paymentRequest = new PaymentRequest(
-            64.00,
+            new BigDecimal("160.00"),
             "Julia",
             LocalDateTime.of(2024,04, 13, 15, 35, 16),
             FormOfPayment.PIX,
@@ -60,7 +61,7 @@ class PaymentServiceTest {
     );
 
     UpdatePaymentDTO updatePaymentDTO = new UpdatePaymentDTO(
-            144.69,
+            new BigDecimal("120.00"),
             "Lucas",
             LocalDateTime.now(),
             FormOfPayment.MONEY,
@@ -83,8 +84,10 @@ class PaymentServiceTest {
             1199999132,
             127172,
             "auhsuhaus",
-            "17177"
-    );
+            "17177",
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00"));
 
     Professional professional = new Professional(
             "Carla",
@@ -109,7 +112,7 @@ class PaymentServiceTest {
 
 
     Payment payment = new Payment(
-            110.00,
+            new BigDecimal("400.00"),
             "Flavio",
             patient,
             LocalDateTime.now(),
@@ -137,7 +140,7 @@ class PaymentServiceTest {
                     .when(paymentRepository)
                     .save(paymentArgumentCaptor.capture());
 
-            patient.setOutstandingBalance(208.00);
+            patient.setOutstandingBalance(new BigDecimal("329.00"));
 
             var response = paymentService.createPayment(paymentRequest);
 
@@ -189,140 +192,6 @@ class PaymentServiceTest {
 
             assertThrows(ProfessionalNotFoundException.class,
                     () -> paymentService.createPayment(paymentRequest));
-        }
-    }
-
-    @Nested
-    class update {
-
-        @Test
-        @DisplayName("Must update payment successfully")
-        void MustUpdatePatientSuccessfully() {
-            doReturn(Optional.of(payment))
-                    .when(paymentRepository)
-                    .findById(payment.getId());
-            doReturn(patient)
-                    .when(patientService)
-                    .findByName(updatePaymentDTO.namePatient());
-            doReturn(professional)
-                    .when(professionalService)
-                    .findByName(updatePaymentDTO.nameProfessional());
-            doReturn(payment)
-                    .when(paymentRepository)
-                    .save(paymentArgumentCaptor.capture());
-
-            patient.setOutstandingBalance(245.00);
-
-            paymentService.update(payment.getId(), updatePaymentDTO);
-
-            var paymentCaptured = paymentArgumentCaptor.getValue();
-
-            assertEquals(payment.getId(), paymentCaptured.getId());
-            assertEquals(updatePaymentDTO.value(), paymentCaptured.getValue());
-            assertEquals(updatePaymentDTO.namePatient(), paymentCaptured.getNamePatient());
-            assertEquals(payment.getPatient(), paymentCaptured.getPatient());
-            assertEquals(updatePaymentDTO.dateRegister(), paymentCaptured.getDateRegister());
-            assertEquals(updatePaymentDTO.formOfPayment(), paymentCaptured.getFormOfPayment());
-            assertEquals(updatePaymentDTO.nameProfessional(), paymentCaptured.getNameProfessional());
-
-            verify(paymentRepository, times(1))
-                    .findById(payment.getId());
-            verify(patientService, times(1))
-                    .findByName(updatePaymentDTO.namePatient());
-            verify(professionalService, times(1))
-                    .findByName(updatePaymentDTO.nameProfessional());
-            verify(paymentRepository, times(1))
-                    .save(payment);
-        }
-
-        @Test
-        @DisplayName("Should throw exception when not finding payment")
-        void ShouldThrowExceptionWhenNotFindingPayment() {
-            doReturn(Optional.empty())
-                    .when(paymentRepository)
-                    .findById(patient.getId());
-
-            assertThrows(PaymentNotFoundException.class,
-                    () -> paymentService.update(patient.getId(), updatePaymentDTO));
-
-            verify(paymentRepository, times(1))
-                    .findById(payment.getId());
-            verify(patientService, times(0))
-                    .findByName(patient.getName());
-            verify(professionalService, times(0))
-                    .findByName(professional.getName());
-            verify(paymentRepository, times(0))
-                    .save(payment);
-        }
-
-        @Test
-        @DisplayName("Should throw exception when not finding patient")
-        void ShouldThrowExceptionWhenNotFindingPatient() {
-            doReturn(Optional.of(payment))
-                    .when(paymentRepository)
-                    .findById(payment.getId());
-
-            assertThrows(PatientNotFoundException.class,
-                    () -> paymentService.update(patient.getId(), updatePaymentDTO));
-
-            verify(paymentRepository, times(1))
-                    .findById(payment.getId());
-            verify(patientService, times(0))
-                    .findByName(patient.getName());
-            verify(professionalService, times(0))
-                    .findByName(professional.getName());
-            verify(paymentRepository, times(0))
-                    .save(payment);
-        }
-
-        @Test
-        @DisplayName("Should throw exception when not finding professional")
-        void ShouldThrowExceptionWhenNotFindingProfessional() {
-            doReturn(Optional.of(payment))
-                    .when(paymentRepository)
-                    .findById(payment.getId());
-            doReturn(patient)
-                    .when(patientService)
-                    .findByName(updatePaymentDTO.namePatient());
-
-            patient.setOutstandingBalance(500.00);
-
-            assertThrows(ProfessionalNotFoundException.class,
-                    () -> paymentService.update(patient.getId(), updatePaymentDTO));
-
-            verify(paymentRepository, times(1))
-                    .findById(payment.getId());
-            verify(patientService, times(1))
-                    .findByName(updatePaymentDTO.namePatient());
-            verify(professionalService, times(0))
-                    .findByName(professional.getName());
-            verify(paymentRepository, times(0))
-                    .save(payment);
-        }
-
-        @Test
-        @DisplayName("An exception must be raised when the patient's outstanding balance is greater" +
-                " than the value of the procedure")
-        void errorOutstandingBalance() {
-            doReturn(Optional.of(payment))
-                    .when(paymentRepository)
-                    .findById(payment.getId());
-            doReturn(patient)
-                    .when(patientService)
-                    .findByName(updatePaymentDTO.namePatient());
-
-
-            assertThrows(OutstandingBalanceException.class,
-                    () -> paymentService.update(patient.getId(), updatePaymentDTO));
-
-            verify(paymentRepository, times(1))
-                    .findById(payment.getId());
-            verify(patientService, times(1))
-                    .findByName(updatePaymentDTO.namePatient());
-            verify(professionalService, times(0))
-                    .findByName(updatePaymentDTO.nameProfessional());
-            verify(paymentRepository, times(0))
-                    .save(payment);
         }
     }
 

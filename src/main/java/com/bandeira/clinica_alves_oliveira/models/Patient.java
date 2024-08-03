@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,13 +52,13 @@ public class Patient {
 
     private String responsible;
 
-    private String cpfOfResposible;
+    private String cpfOfResponsible;
 
-	private Double outstandingBalance;
+	private BigDecimal outstandingBalance;
 
-	private Double valueUsed;
+	private BigDecimal valueUsed;
 
-	private Double amountReceived;
+	private BigDecimal amountReceived;
 
 	@OneToMany(mappedBy = "patient")
 	List<Query> queries = new ArrayList<>();
@@ -70,7 +71,8 @@ public class Patient {
 
 	public Patient(String name, String cpf, String rg, LocalDate dateOfBirth, String cep, String state,
                    String city, String street, String number, String neighborhood, String complement,
-                   String email, Integer cel, Integer tel, String responsible, String cpfOfResposible) {
+                   String email, Integer cel, Integer tel, String responsible, String cpfOfResponsible,
+				   BigDecimal outstandingBalance, BigDecimal amountReceived, BigDecimal valueUsed) {
 		this.name = name;
 		this.cpf = cpf;
 		this.rg = rg;
@@ -86,6 +88,9 @@ public class Patient {
 		this.cel = cel;
 		this.tel = tel;
 		this.responsible = responsible;
-		this.cpfOfResposible = cpfOfResposible;
+		this.cpfOfResponsible = cpfOfResponsible;
+		this.outstandingBalance = outstandingBalance;
+		this.amountReceived = amountReceived;
+		this.valueUsed = valueUsed;
 	}
 }

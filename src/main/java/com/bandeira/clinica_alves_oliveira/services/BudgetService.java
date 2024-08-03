@@ -68,11 +68,8 @@ public class BudgetService {
                 procedure
         );
 
-        if(budget.getStatusBudget().equals(StatusBudget.CONTRACTED)){
-            if(patient.getOutstandingBalance() == null) {
-                patient.setOutstandingBalance(budget.getValue());
-            } else
-                patient.setOutstandingBalance(patient.getOutstandingBalance() + budget.getValue());
+        if(budget.getStatusBudget().equals(StatusBudget.CONTRACTED)) {
+            patient.setOutstandingBalance(patient.getOutstandingBalance().add(budget.getValue()));
         }
 
         patientRepository.save(patient);

@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("procedimento")
+@RequestMapping("procedure")
 public class ProcedureController {
 
     @Autowired
     private ProcedureService procedureService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ProcedureRequest> createProcedure(@RequestBody @Valid ProcedureRequest procedureRequest){
         var response = procedureService.createProcedure(procedureRequest);
         return ResponseEntity.ok().body(response);

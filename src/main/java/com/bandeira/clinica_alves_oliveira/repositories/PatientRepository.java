@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    Patient findByName(String nome);
+    Patient findByName(String name);
 }

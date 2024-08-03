@@ -1,7 +1,6 @@
 package com.bandeira.clinica_alves_oliveira.services;
 
 import com.bandeira.clinica_alves_oliveira.dtos.PaymentRequest;
-import com.bandeira.clinica_alves_oliveira.dtos.UpdatePaymentDTO;
 import com.bandeira.clinica_alves_oliveira.exceptions.OutstandingBalanceException;
 import com.bandeira.clinica_alves_oliveira.exceptions.PatientNotFoundException;
 import com.bandeira.clinica_alves_oliveira.exceptions.PaymentNotFoundException;
@@ -31,6 +30,8 @@ public class PaymentService {
     @Autowired
     private ProfessionalService professionalService;
 
+
+
     public PaymentRequest createPayment(PaymentRequest paymentRequest) {
 
         var patient = patientService.findByName(paymentRequest.namePatient());
@@ -55,19 +56,17 @@ public class PaymentService {
                 paymentRequest.nameProfessional(),
                 professional
         );
+            patient.setAmountReceived(patient.getAmountReceived().add(payment.getValue()));
 
-        if(patient.getAmountReceived() == null) {
-            patient.setAmountReceived(paymentRequest.value());
-        } else
-            patient.setAmountReceived(patient.getAmountReceived() + payment.getValue());
 
-        if (patient.getOutstandingBalance() == null){
-            patient.setOutstandingBalance(0.0);
-            if(patient.getOutstandingBalance() < paymentRequest.value()){
+            var compareTo = patient.getOutstandingBalance().compareTo(paymentRequest.value());
+
+            if(compareTo < 0){
                 throw new OutstandingBalanceException();
             }
-        } else
-            patient.setOutstandingBalance(patient.getOutstandingBalance() - paymentRequest.value());
+
+
+            patient.setOutstandingBalance(patient.getOutstandingBalance().subtract(paymentRequest.value()));
 
         patientRepository.save(patient);
 
@@ -75,50 +74,6 @@ public class PaymentService {
 
         return paymentRequest;
     }
-
-
-
-    public void update(Long id, UpdatePaymentDTO updatePaymentDTO) {
-
-        var payment = paymentRepository.findById(id).orElseThrow(PaymentNotFoundException::new);
-
-        payment.setValue(updatePaymentDTO.value());
-
-        payment.setNamePatient(updatePaymentDTO.namePatient());
-
-        var patient= patientService.findByName(updatePaymentDTO.namePatient());
-
-        if (patient == null) {
-            throw new PatientNotFoundException();
-        }
-
-        if (patient.getOutstandingBalance() == null) {
-            patient.setOutstandingBalance(0.0);
-        }
-        if(patient.getOutstandingBalance() < updatePaymentDTO.value()){
-            throw new OutstandingBalanceException();
-        }
-            patient.setOutstandingBalance(patient.getOutstandingBalance() - updatePaymentDTO.value());
-
-        payment.setPatient(patient);
-
-        payment.setDateRegister(updatePaymentDTO.dateRegister());
-        payment.setFormOfPayment(updatePaymentDTO.formOfPayment());
-
-        payment.setNameProfessional(updatePaymentDTO.nameProfessional());
-
-        var professional = professionalService.findByName(updatePaymentDTO.nameProfessional());
-
-        if (professional == null) {
-            throw new ProfessionalNotFoundException();
-        }
-
-        payment.setProfessionalResponsible(professional);
-
-
-        paymentRepository.save(payment);
-    }
-
 
 
     public List<Payment> findByDia(){
@@ -135,7 +90,7 @@ public class PaymentService {
 
     public void delete(Long id){
 
-        var payment = paymentRepository.findById(id).orElseThrow(PatientNotFoundException::new);
+        var payment = paymentRepository.findById(id).orElseThrow(PaymentNotFoundException::new);
 
         paymentRepository.deleteById(id);
     }

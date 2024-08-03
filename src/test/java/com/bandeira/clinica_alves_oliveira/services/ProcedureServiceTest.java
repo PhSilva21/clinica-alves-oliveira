@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,18 +38,18 @@ public class ProcedureServiceTest {
     Procedure procedure = new Procedure(
             "Canal",
             Specialty.ENDODONTIA,
-            64.00);
+            new BigDecimal("500.20"));
 
     ProcedureRequest procedureRequest = new ProcedureRequest(
             "Restauracao",
             Specialty.AESTHETICS,
-            120.00
+            new BigDecimal("280.00")
     );
 
     UpdateProceduresDTO updateProcedureDTO = new UpdateProceduresDTO(
             "Extração",
             Specialty.DENTISTICS,
-            87.14);
+            new BigDecimal("140.00"));
 
     @Nested
     class createProcedure {

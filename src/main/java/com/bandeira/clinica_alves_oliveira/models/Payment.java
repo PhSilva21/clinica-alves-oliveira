@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double value;
+    private BigDecimal value;
 
     private String namePatient;
 
@@ -41,7 +42,7 @@ public class Payment {
     @JoinColumn(name = "professional_id")
     private Professional professionalResponsible;
 
-    public Payment(Double value, String namePatient, Patient patient, LocalDateTime dateRegister,
+    public Payment(BigDecimal value, String namePatient, Patient patient, LocalDateTime dateRegister,
                    FormOfPayment formOfPayment, String nameProfessional, Professional professionalResponsible) {
         this.value = value;
         this.namePatient = namePatient;

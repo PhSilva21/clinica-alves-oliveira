@@ -19,7 +19,7 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ExpenseRequest> create(@RequestBody @Valid ExpenseRequest expenseRequest){
         var response = expenseService.createExpense(expenseRequest);
         return ResponseEntity.ok().body(expenseRequest);

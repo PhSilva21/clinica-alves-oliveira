@@ -1,15 +1,12 @@
 package com.bandeira.clinica_alves_oliveira.dtos;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
 public record ProfessionalRequest(
 
-        @NotNull@NotNull(message = "The name cannot be null")
-        @NotBlank(message = "The name cannot be null")
-        @NotBlank
+        @NotNull(message = "The name cannot be null")
         String name,
 
         LocalDate dateOfBirth,
@@ -19,8 +16,6 @@ public record ProfessionalRequest(
         String cpf,
 
         @NotNull(message = "The profession cannot be null")
-        @NotBlank(message = "The profession cannot be null")
-        @NotBlank
         String profession,
 
         String cep,

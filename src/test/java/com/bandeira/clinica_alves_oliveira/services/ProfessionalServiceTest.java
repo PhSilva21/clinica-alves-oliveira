@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +56,10 @@ class ProfessionalServiceTest {
             1199999132,
             127172,
             "auhsuhaus",
-            "17177"
+            "17177",
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00")
     );
 
     UpdateProfessionalDTO updateProfessionalDTO = new UpdateProfessionalDTO(
@@ -272,23 +276,23 @@ class ProfessionalServiceTest {
 
             var professionalCaptured = professionalArgumentCaptor.getValue();
 
-            assertEquals(professionalRequest.name(), professionalCaptured.getName());
-            assertEquals(professionalRequest.dateOfBirth(), professionalCaptured.getDateOfBirth());
-            assertEquals(professionalRequest.rg(), professionalCaptured.getRg());
-            assertEquals(professionalRequest.cpf(), professionalCaptured.getCpf());
-            assertEquals(professionalRequest.profession(), professionalCaptured.getProfession());
-            assertEquals(professionalRequest.cep(), professionalCaptured.getCep());
+            assertEquals(updateProfessionalDTO.name(), professionalCaptured.getName());
+            assertEquals(updateProfessionalDTO.dateOfBirth(), professionalCaptured.getDateOfBirth());
+            assertEquals(updateProfessionalDTO.rg(), professionalCaptured.getRg());
+            assertEquals(updateProfessionalDTO.cpf(), professionalCaptured.getCpf());
+            assertEquals(updateProfessionalDTO.profession(), professionalCaptured.getProfession());
+            assertEquals(updateProfessionalDTO.cep(), professionalCaptured.getCep());
             assertEquals(address.getUf(), professionalCaptured.getState());
             assertEquals(address.getLocalidade(), professionalCaptured.getCity());
             assertEquals(address.getLogradouro(), professionalCaptured.getStreet());
-            assertEquals(professionalRequest.number(), professionalCaptured.getNumber());
+            assertEquals(updateProfessionalDTO.number(), professionalCaptured.getNumber());
             assertEquals(address.getBairro(), professionalCaptured.getNeighborhood());
-            assertEquals(professionalRequest.complement(), professionalCaptured.getComplement());
-            assertEquals(professionalRequest.email(), professionalCaptured.getEmail());
-            assertEquals(professionalRequest.cel(), professionalCaptured.getCel());
-            assertEquals(professionalRequest.tel(), professionalCaptured.getTel());
-            assertEquals(professionalRequest.bank(), professionalCaptured.getBank());
-            assertEquals(professionalRequest.agency(), professionalCaptured.getAgency());
+            assertEquals(updateProfessionalDTO.complement(), professionalCaptured.getComplement());
+            assertEquals(updateProfessionalDTO.email(), professionalCaptured.getEmail());
+            assertEquals(updateProfessionalDTO.cel(), professionalCaptured.getCel());
+            assertEquals(updateProfessionalDTO.tel(), professionalCaptured.getTel());
+            assertEquals(updateProfessionalDTO.bank(), professionalCaptured.getBank());
+            assertEquals(updateProfessionalDTO.agency(), professionalCaptured.getAgency());
 
             verify(professionalRepository, times(1))
                     .findById(professional.getId());

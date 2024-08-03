@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,11 @@ public class PatientService {
                 patientRequest.cel(),
                 patientRequest.tel(),
                 patientRequest.responsible(),
-                patientRequest.cpfOfResponsible());
+                patientRequest.cpfOfResponsible(),
+                new BigDecimal("0.00"),
+                new BigDecimal("0.00"),
+                new BigDecimal("0.00"));
+
 
         patientRepository.save(patient);
 
@@ -88,7 +93,7 @@ public class PatientService {
         patient.setCel(updatePatientDTO.cel());
         patient.setTel(updatePatientDTO.tel());
         patient.setResponsible(updatePatientDTO.responsible());
-        patient.setCpfOfResposible(updatePatientDTO.cpfOfResponsible());
+        patient.setCpfOfResponsible(updatePatientDTO.cpfOfResponsible());
 
         patientRepository.save(patient);
 
@@ -102,8 +107,13 @@ public class PatientService {
         patientRepository.deleteById(id);
     }
 
-    public Patient findByName(String nome){
-        return patientRepository.findByName(nome);
+    public Patient findByName(String name){
+        var patient = patientRepository.findByName(name);
+
+        if(patient == null){
+            throw new PatientNotFoundException();
+        }
+        return patient;
     }
 
 

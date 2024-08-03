@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -90,8 +91,12 @@ class PatientServiceTest {
             12328127,
             127172,
             "auhsuhaus",
-            "17177"
+            "17177",
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00")
     );
+
     PatientRequest patientRequest = new PatientRequest(
             "Paula",
             "198921",
@@ -140,7 +145,11 @@ class PatientServiceTest {
             assertEquals(patientRequest.cel(), patientCaptured.getCel());
             assertEquals(patientRequest.tel(), patientCaptured.getTel());
             assertEquals(patientRequest.responsible(), patientCaptured.getResponsible());
-            assertEquals(patientRequest.cpfOfResponsible(), patientCaptured.getResponsible());
+            assertEquals(patientRequest.cpfOfResponsible(), patientCaptured.getCpfOfResponsible());
+            assertEquals(patientCaptured.getOutstandingBalance(), new BigDecimal("0.00"));
+            assertEquals(patientCaptured.getValueUsed(), new BigDecimal("0.00"));
+            assertEquals(patientCaptured.getAmountReceived(), new BigDecimal("0.00"));
+
         }
     }
 
@@ -228,7 +237,7 @@ class PatientServiceTest {
             assertEquals(updatePatientDTO.cel(), patientCaptured.getCel());
             assertEquals(updatePatientDTO.tel(), patientCaptured.getTel());
             assertEquals(updatePatientDTO.responsible(), patientCaptured.getResponsible());
-            assertEquals(updatePatientDTO.cpfOfResponsible(), patientCaptured.getResponsible());
+            assertEquals(updatePatientDTO.cpfOfResponsible(), patientCaptured.getCpfOfResponsible());
 
             verify(patientRepository, times(1))
                     .findById(patient.getId());

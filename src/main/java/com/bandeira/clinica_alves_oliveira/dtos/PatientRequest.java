@@ -1,6 +1,5 @@
 package com.bandeira.clinica_alves_oliveira.dtos;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -8,7 +7,6 @@ import java.time.LocalDate;
 public record PatientRequest(
 
         @NotNull(message = "The name cannot be null")
-        @NotBlank(message = "The name cannot be empty")
         String name,
 
         String cpf,

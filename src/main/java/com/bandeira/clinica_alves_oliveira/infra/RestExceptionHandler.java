@@ -52,11 +52,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 " greater than the patient's outstanding balance.");
     }
 
-    @ExceptionHandler(AddressNotFoundException.class)
-    private ResponseEntity<String> addresNotFouns(AddressNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Addres not found.");
-    }
-
     @ExceptionHandler(PaymentNotFoundException.class)
     private ResponseEntity<String> paymentNotFound(PaymentNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Payment not found.");

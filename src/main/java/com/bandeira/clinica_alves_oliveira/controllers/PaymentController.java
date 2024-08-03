@@ -1,7 +1,6 @@
 package com.bandeira.clinica_alves_oliveira.controllers;
 
 import com.bandeira.clinica_alves_oliveira.dtos.PaymentRequest;
-import com.bandeira.clinica_alves_oliveira.dtos.UpdatePaymentDTO;
 import com.bandeira.clinica_alves_oliveira.models.Payment;
 import com.bandeira.clinica_alves_oliveira.services.PaymentService;
 import jakarta.validation.Valid;
@@ -38,12 +37,6 @@ public class PaymentController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Payment> updateById(@PathVariable Long id,
-                                              @RequestBody UpdatePaymentDTO updatePaymentDTO){
-        paymentService.update(id, updatePaymentDTO);
-        return ResponseEntity.ok().build();
-    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){

@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -66,7 +67,11 @@ class BudgetServiceTest {
             12328127,
             127172,
             "auhsuhaus",
-            "17177");
+            "17177",
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00"),
+            new BigDecimal("0.00"));
+
 
     Professional professional = new Professional(
             "Carla",
@@ -91,7 +96,7 @@ class BudgetServiceTest {
     Procedure procedure = new Procedure(
             "Canal",
             Specialty.AESTHETICS,
-            133.00);
+            new BigDecimal("700.00"));
 
     Budget budget = new Budget(
             LocalDate.now(),
