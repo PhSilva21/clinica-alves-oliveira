@@ -78,9 +78,9 @@ public class ProfessionalService {
     }
 
 
-    public void update(Long id, UpdateProfessionalDTO updateProfessionalDTO) throws IOException {
+    public void update(UpdateProfessionalDTO updateProfessionalDTO) throws IOException {
 
-        var professional = professionalRepository.findById(id)
+        var professional = professionalRepository.findById(updateProfessionalDTO.id())
                 .orElseThrow(ProfessionalNotFoundException::new);
 
         professional.setName(updateProfessionalDTO.name());

@@ -9,7 +9,7 @@ public record UpdatePaymentDTO(
 
          BigDecimal value,
 
-         String namePatient,
+         String z,
 
          LocalDateTime dateRegister,
 

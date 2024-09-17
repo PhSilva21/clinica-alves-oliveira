@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("profissional")
+@RequestMapping("professional")
 public class ProfessionalController {
 
     @Autowired
@@ -44,7 +44,7 @@ public class ProfessionalController {
     @PutMapping
     public ResponseEntity<Void> updateById(@PathVariable Long id,
                                            UpdateProfessionalDTO updateProfessionalDTO) throws IOException {
-        professionalService.update(id, updateProfessionalDTO);
+        professionalService.update(updateProfessionalDTO);
         return ResponseEntity.ok().build();
     }
 

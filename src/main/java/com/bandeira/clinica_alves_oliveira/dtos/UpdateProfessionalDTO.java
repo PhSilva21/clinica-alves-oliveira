@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 public record UpdateProfessionalDTO(
 
+
+        Long id,
+
         String name,
 
         LocalDate dateOfBirth,
